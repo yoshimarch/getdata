@@ -2,32 +2,28 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>スプレッドシートのA1セル表示（サンプル）</title>
+  <title>TabletopでGoogleスプレッドシート読み込み</title>
+  <script src="https://unpkg.com/tabletop@1.6.4/tabletop.js"></script>
 </head>
 <body>
   <h1>サンプルスプレッドシートのA1セルの値：</h1>
   <div id="output">読み込み中...</div>
 
   <script>
-    const spreadsheetId = "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms";
-    const url = `https://spreadsheets.google.com/feeds/cells/${spreadsheetId}/1/public/full?alt=json`;
+    const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/pubhtml';
 
-    fetch(url)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("HTTPエラー: " + res.status);
-        }
-        return res.json();
-      })
-      .then(data => {
-        const a1 = data.feed.entry.find(cell => cell.title.$t === "A1");
-        document.getElementById("output").textContent = a1 ? a1.content.$t : "A1セルが見つかりません";
-      })
-      .catch(err => {
-        console.error("読み込みエラー:", err);
-        document.getElementById("output").textContent = "読み込みエラー";
+    function showInfo(data, tabletop) {
+      // 1行目（インデックス0）の "Student Name" を表示
+      document.getElementById('output').textContent = data[0]["Student Name"] || "値が見つかりません";
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      Tabletop.init({
+        key: publicSpreadsheetUrl,
+        callback: showInfo,
+        simpleSheet: true
       });
+    });
   </script>
 </body>
 </html>
-
