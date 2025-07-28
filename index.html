@@ -9,7 +9,7 @@
   <div id="output">読み込み中...</div>
 
   <script>
-    fetch('https://spreadsheets.google.com/feeds/cells/【スプレッドシートID】/1/public/full?alt=json')
+    fetch('https://spreadsheets.google.com/feeds/cells/1eqCy2nqHPj6I688PqpsLTPqrvVll5z5B49pP9nkVdaQ/1/public/full?alt=json')
       .then(response => response.json())
       .then(data => {
         const entries = data.feed.entry;
