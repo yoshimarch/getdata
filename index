@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>スプレッドシート表示</title>
+</head>
+<body>
+  <h1>スプレッドシートのA1セルの値：</h1>
+  <div id="output">読み込み中...</div>
+
+  <script>
+    fetch('https://spreadsheets.google.com/feeds/cells/【スプレッドシートID】/1/public/full?alt=json')
+      .then(response => response.json())
+      .then(data => {
+        const entries = data.feed.entry;
+        const a1 = entries.find(cell => cell.title.$t === "A1");
+        document.getElementById("output").textContent = a1 ? a1.content.$t : "A1セルが見つかりません";
+      })
+      .catch(error => {
+        document.getElementById("output").textContent = "読み込みエラー";
+        console.error("エラー:", error);
+      });
+  </script>
+</body>
+</html>
