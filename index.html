@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>GoogleスプレッドシートのA1表示</title>
+  <title>スプレッドシートのA1セル表示</title>
 </head>
 <body>
   <h1>スプレッドシートのA1セルの値：</h1>
@@ -13,21 +13,21 @@
     const url = `https://spreadsheets.google.com/feeds/cells/${spreadsheetId}/1/public/full?alt=json`;
 
     fetch(url)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("HTTPエラー: " + response.status);
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("HTTPエラー: " + res.status);
         }
-        return response.json();
+        return res.json();
       })
       .then(data => {
-        const entries = data.feed.entry;
-        const a1 = entries.find(cell => cell.title.$t === "A1");
+        const a1 = data.feed.entry.find(cell => cell.title.$t === "A1");
         document.getElementById("output").textContent = a1 ? a1.content.$t : "A1セルが見つかりません";
       })
-      .catch(error => {
-        console.error("エラー:", error);
+      .catch(err => {
+        console.error("読み込みエラー:", err);
         document.getElementById("output").textContent = "読み込みエラー";
       });
   </script>
 </body>
 </html>
+
